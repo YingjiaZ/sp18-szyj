@@ -4,14 +4,14 @@ public class LinkedListDeque<T> {
     private int size;
 
     public class IntNode {
-        public IntNode Prev;
-        public T item;
-        public IntNode Next;
+        private IntNode prev;
+        private T item;
+        private IntNode next;
 
         public IntNode(IntNode p, T i, IntNode n) {
-            Prev = p;
+            prev = p;
             item = i;
-            Next = n;
+            next = n;
         }
     }
 
@@ -19,21 +19,21 @@ public class LinkedListDeque<T> {
     public LinkedListDeque() {
         size = 0;
         sentinel = new IntNode(null, null, null);
-        sentinel.Prev = sentinel;
-        sentinel.Next = sentinel;
+        sentinel.prev = sentinel;
+        sentinel.next = sentinel;
     }
 
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
-        sentinel.Next = new IntNode(sentinel, item, sentinel.Next);  //change sentinel.nest
-        sentinel.Next.Next.Prev = sentinel.Next;  //change original first first item's "previous"
+        sentinel.next = new IntNode(sentinel, item, sentinel.next);  //change sentinel.nest
+        sentinel.next.next.prev = sentinel.next;  //change original first first item's "previous"
         size = size + 1;
     }
 
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
-        sentinel.Prev = new IntNode(sentinel.Prev, item, sentinel);
-        sentinel.Prev.Prev.Next = sentinel.Prev;
+        sentinel.prev = new IntNode(sentinel.prev, item, sentinel);
+        sentinel.prev.prev.next = sentinel.prev;
         size = size + 1;
     }
 
@@ -52,33 +52,35 @@ public class LinkedListDeque<T> {
 
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
-        IntNode ptr = this.sentinel.Next;
+        IntNode ptr = this.sentinel.next;
         while (ptr != sentinel) {
             System.out.print(ptr.item + " ");
-            ptr = ptr.Next;
+            ptr = ptr.next;
         }
     }
 
-    /** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the front of the deque.
+     * If no such item exists, returns null. */
     public T removeFirst() {
         if (this.isEmpty()) {
             return null;
         }
-        T first = sentinel.Next.item;
-        sentinel.Next = sentinel.Next.Next;
-        sentinel.Next.Prev = sentinel;
+        T first = sentinel.next.item;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
         size = size - 1;
         return first;
     }
 
-    /** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the back of the deque.
+     * If no such item exists, returns null. */
     public T removeLast() {
         if (this.isEmpty()) {
             return null;
         }
-        T last = sentinel.Prev.item;
-        sentinel.Prev = sentinel.Prev.Prev;
-        sentinel.Prev.Next = sentinel;
+        T last = sentinel.prev.item;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
         size = size - 1;
         return last;
     }
@@ -89,9 +91,9 @@ public class LinkedListDeque<T> {
         if (index >= size) {
             return null;
         }
-        IntNode ptr = sentinel.Next;
+        IntNode ptr = sentinel.next;
         while (index != 0) {
-            ptr = ptr.Next;
+            ptr = ptr.next;
             index = index - 1;
         }
         T value = ptr.item;
@@ -103,13 +105,13 @@ public class LinkedListDeque<T> {
         if (index >= size) {
             return null;
         }
-         return getHelper(sentinel.Next, index);
+        return getHelper(sentinel.next, index);
     }
 
     private T getHelper(IntNode N, int index) {
         if (index == 0) {
             return N.item;
         }
-        return getHelper(N.Next,index - 1);
+        return getHelper(N.next, index - 1);
     }
 }

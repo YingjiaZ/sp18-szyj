@@ -25,14 +25,12 @@ public class ArrayDeque<T> {
         }
         if (front < back) {
             System.arraycopy(items, 0, a, 0, size);
-            nextFirst = capacity - 1;
-            nextLast = size;
         } else {
-            System.arraycopy(items, 0, a, 0, back + 1);
-            System.arraycopy(items, front + 1, a, capacity - size + front - 1, size - front + 1);
-            nextFirst = capacity - size + front;
-            nextLast = back + 1;
+            System.arraycopy(items, front, a, 0, items.length - front);
+            System.arraycopy(items, 0, a, items.length - front, back + 1);
         }
+        nextFirst = a.length - 1;
+        nextLast = size;
         items = a;
     }
 

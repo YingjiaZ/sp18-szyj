@@ -14,7 +14,7 @@ public class ArrayDeque<T> {
     }
 
     /** Plus nextFirst or nextLast in circular. */
-    private int PlusOne(int next) {
+    private int plusOne(int next) {
         next += 1;
         if (next == items.length) {
             next = 0;
@@ -23,7 +23,7 @@ public class ArrayDeque<T> {
     }
 
     /** Minus nextFirst or nextLast in circular. */
-    private int MinusOne(int next) {
+    private int minusOne(int next) {
         next -= 1;
         if (next < 0) {
             next = items.length -  1;
@@ -33,8 +33,8 @@ public class ArrayDeque<T> {
     /** Resize the array to the target capacity. */
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
-        int front = PlusOne(nextFirst);
-        int back = MinusOne(nextLast);
+        int front = plusOne(nextFirst);
+        int back = minusOne(nextLast);
         if (front < back) {
             System.arraycopy(items, 0, a, 0, size);
         } else {
@@ -52,7 +52,7 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
         items[nextFirst] = item;
-        nextFirst = MinusOne(nextFirst);
+        nextFirst = minusOne(nextFirst);
         size = size + 1;
     }
 
@@ -62,7 +62,7 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
         items[nextLast] = item;
-        PlusOne(nextLast);
+        plusOne(nextLast);
         size = size + 1;
     }
 
@@ -82,11 +82,11 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
         int ptr = nextFirst;
-        ptr = PlusOne(ptr);
+        ptr = plusOne(ptr);
         int i = 0;
         while (i < size) {
             System.out.print(items[ptr] + " ");
-            ptr = PlusOne(ptr);
+            ptr = plusOne(ptr);
             i += 1;
         }
     }
@@ -98,7 +98,7 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        nextFirst = PlusOne(nextFirst);
+        nextFirst = plusOne(nextFirst);
         T first = items[nextFirst];
         items[nextFirst] = null;
         size = size - 1;
@@ -114,7 +114,7 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        nextLast = MinusOne(nextLast);
+        nextLast = minusOne(nextLast);
         T last = items[nextLast];
         items[nextLast] = null;
         size = size - 1;

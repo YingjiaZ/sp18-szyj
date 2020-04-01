@@ -9,20 +9,32 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
-        nextFirst = nextLast = 0;
+        nextFirst = 0;
+        nextLast = 1;
     }
 
+    /** Plus nextFirst or nextLast in circular. */
+    private int PlusOne(int next) {
+        next += 1;
+        if (next == items.length) {
+            next = 0;
+        }
+        return next;
+    }
+
+    /** Minus nextFirst or nextLast in circular. */
+    private int MinusOne(int next) {
+        next -= 1;
+        if (next < 0>) {
+            next = items.length -  1;
+        }
+        return next;
+    }
     /** Resize the array to the target capacity. */
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
-        int front = nextFirst + 1;
-        if (front == size) {
-            front = 0;
-        }
-        int back = nextLast - 1;
-        if (back < 0) {
-            back = size - 1;
-        }
+        int front = PlusOne(nextFirst);
+        int back = MinusOne(nextLast);
         if (front < back) {
             System.arraycopy(items, 0, a, 0, size);
         } else {
@@ -40,10 +52,7 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
         items[nextFirst] = item;
-        nextFirst -= 1;
-        if (nextFirst < 0) {
-            nextFirst = items.length - 1;
-        }
+        nextFirst = MinusOne(nextFirst);
         size = size + 1;
     }
 
@@ -53,10 +62,7 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
         items[nextLast] = item;
-        nextLast += 1;
-        if (nextLast == items.length) {
-            nextLast = 0;
-        }
+        PlusOne(nextLast);
         size = size + 1;
     }
 
@@ -76,17 +82,11 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
         int ptr = nextFirst;
-        ptr = ptr + 1;
-        if (ptr == items.length) {
-            ptr = 0;
-        }
+        ptr = PlusOne(ptr);
         int i = 0;
         while (i < size) {
             System.out.print(items[ptr] + " ");
-            ptr += 1;
-            if (ptr == items.length) {
-                ptr = 0;
-            }
+            ptr = PlusOne(ptr);
             i += 1;
         }
     }
@@ -98,10 +98,7 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        nextFirst = nextFirst + 1;
-        if (nextFirst == items.length) {
-            nextFirst = 0;
-        }
+        nextFirst = PlusOne(nextFirst);
         T first = items[nextFirst];
         items[nextFirst] = null;
         size = size - 1;
@@ -117,10 +114,7 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        nextLast = nextLast - 1;
-        if (nextLast < 0) {
-            nextLast = items.length - 1;
-        }
+        nextLast = MinusOne(nextLast);
         T last = items[nextLast];
         items[nextLast] = null;
         size = size - 1;

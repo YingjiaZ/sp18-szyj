@@ -15,9 +15,24 @@ public class ArrayDeque<T> {
     /** Resize the array to the target capacity. */
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, a, 0, size);
-        nextFirst = capacity - 1;
-        nextLast = size;
+        int front = nextFirst + 1;
+        if (front == size) {
+            front = 0;
+        }
+        int back = nextLast - 1;
+        if (back < 0) {
+            back = size - 1;
+        }
+        if (front < back) {
+            System.arraycopy(items, 0, a, 0, size);
+            nextFirst = capacity - 1;
+            nextLast = size;
+        } else {
+            System.arraycopy(items, 0, a, 0, back + 1);
+            System.arraycopy(items, front + 1, a, capacity - size + front - 1, size - front + 1);
+            nextFirst = capacity - size + front;
+            nextLast = back + 1;
+        }
         items = a;
     }
 
@@ -27,10 +42,10 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
         items[nextFirst] = item;
-        if (nextFirst == 0) {
+        nextFirst -= 1;
+        if (nextFirst < 0) {
             nextFirst = items.length - 1;
         }
-        nextFirst -= 1;
         size = size + 1;
     }
 
@@ -40,10 +55,10 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
         items[nextLast] = item;
-        if (nextLast == items.length - 1) {
+        nextLast += 1;
+        if (nextLast == items.length) {
             nextLast = 0;
         }
-        nextLast += 1;
         size = size + 1;
     }
 

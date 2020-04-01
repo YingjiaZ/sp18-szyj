@@ -25,7 +25,7 @@ public class ArrayDeque<T> {
     /** Minus nextFirst or nextLast in circular. */
     private int MinusOne(int next) {
         next -= 1;
-        if (next < 0>) {
+        if (next < 0) {
             next = items.length -  1;
         }
         return next;

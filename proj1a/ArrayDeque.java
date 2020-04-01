@@ -104,7 +104,7 @@ public class ArrayDeque<T> {
         items[nextFirst] = null;
         size = size - 1;
         if (items.length >= 16 && items.length > 4 * size) {
-            resize(size / 2);  // int/int = int
+            resize(items.length / 2);  // int/int = int
         }
         return first;
     }
@@ -120,7 +120,7 @@ public class ArrayDeque<T> {
         items[nextLast] = null;
         size = size - 1;
         if (items.length >= 16 && items.length > 4 * size) {
-            resize(size / 2);  // int/int = int
+            resize(items.length / 2);  // int/int = int
         }
         return last;
     }
@@ -128,6 +128,11 @@ public class ArrayDeque<T> {
     /**  Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      * If no such item exists, returns null. Must not alter the deque! */
     public T get(int index) {
-        return items[index];
+        int fp = plusOne(nextFirst);
+        while (index != 0) {
+            fp = plusOne(fp);
+            index -= 1;
+        }
+        return items[fp];
     }
 }

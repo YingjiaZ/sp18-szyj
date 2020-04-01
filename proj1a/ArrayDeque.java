@@ -75,11 +75,19 @@ public class ArrayDeque<T> {
 
     /** Prints the items in the deque from first to last, separated by a space. */
     public void printDeque() {
-        for (int i = 0; i < items.length; i += 1) {
-            if (items[i] == null) {
-                continue;
+        int ptr = nextFirst;
+        ptr = ptr + 1;
+        if (ptr == items.length) {
+            ptr = 0;
+        }
+        int i = 0;
+        while (i < size) {
+            System.out.print(items[ptr] + " ");
+            ptr += 1;
+            if (ptr == items.length) {
+                ptr = 0;
             }
-            System.out.print(items[i] + " ");
+            i += 1;
         }
     }
 

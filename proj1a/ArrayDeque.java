@@ -35,6 +35,8 @@ public class ArrayDeque<T> {
         T[] a = (T[]) new Object[capacity];
         int front = plusOne(nextFirst);
         int back = minusOne(nextLast);
+        /* If "front" > "back", split items into two parts.
+        The first part is at the back of the new array.*/
         if (front < back) {
             System.arraycopy(items, 0, a, 0, size);
         } else {
@@ -98,10 +100,11 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        nextFirst = plusOne(nextFirst);
-        T first = items[nextFirst];
-        items[nextFirst] = null;
+        int fp = plusOne(nextFirst);
+        T first = items[fp];
+        items[fp] = null;
         size = size - 1;
+        nextFirst = fp;
         if (items.length >= 16 && items.length > 4 * size) {
             resize(size / 2);  // int/int = int
         }
@@ -114,10 +117,11 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        nextLast = minusOne(nextLast);
-        T last = items[nextLast];
-        items[nextLast] = null;
+        int lp = minusOne(nextLast);
+        T last = items[lp];
+        items[lp] = null;
         size = size - 1;
+        nextFirst = lp;
         if (items.length >= 16 && items.length > 4 * size) {
             resize(size / 2);  // int/int = int
         }

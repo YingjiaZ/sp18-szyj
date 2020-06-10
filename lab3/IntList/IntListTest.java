@@ -1,5 +1,4 @@
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class IntListTest {
@@ -39,6 +38,13 @@ public class IntListTest {
      * Keep in mind that dcatenate(A, B) is NOT required to leave A untouched.
      * Anything can happen to A.
      */
+    @Test(timeout = 1000)
+    public void testReverse(){
+        IntList L = IntList.of(1,2,3,4);
+        assertEquals(IntList.of(3,2,1), IntList.reverse(L));
+        IntList empty = IntList.of();
+        assertEquals(empty,IntList.reverse(empty));
+    }
 
     @Test
     public void testSquareListRecursive() {

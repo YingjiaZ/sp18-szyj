@@ -33,7 +33,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     /** increment the first or last pointer in circle */
-    public int plusOne(int p) {
+    private int plusOne(int p) {
         if (p + 1 == this.capacity) {
             return 0;
         } else {
@@ -82,13 +82,13 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
     public Iterator<T> iterator() {
-        return new bufferIterator();
+        return new BufferIterator();
     }
 
-    private class bufferIterator implements Iterator<T> {
+    private class BufferIterator implements Iterator<T> {
         int pointer;
 
-        public bufferIterator() {
+        public BufferIterator() {
             pointer = 0;
         }
 

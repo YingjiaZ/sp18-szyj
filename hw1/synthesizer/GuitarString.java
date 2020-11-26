@@ -1,4 +1,4 @@
-// TODO: Make sure to make this class a part of the synthesizer package
+package synthesizer;// TODO: Make sure to make this class a part of the synthesizer package
 //package <package name>;
 
 //Make sure this class is public
@@ -15,9 +15,14 @@ public class GuitarString {
     /* Create a guitar string of the given frequency.  */
     public GuitarString(double frequency) {
         // TODO: Create a buffer with capacity = SR / frequency. You'll need to
-        //       cast the result of this divsion operation into an int. For better
+        //       cast the result of this division operation into an int. For better
         //       accuracy, use the Math.round() function before casting.
         //       Your buffer should be initially filled with zeros.
+        int capacity = (int) Math.round(SR / frequency);
+        buffer = new ArrayRingBuffer<>(capacity);
+        for (int i = 0; i < capacity; i += 1) {
+            buffer.enqueue(0.0);
+        }
     }
 
 
@@ -28,6 +33,24 @@ public class GuitarString {
         //       double r = Math.random() - 0.5;
         //
         //       Make sure that your random numbers are different from each other.
+        for (int i = 0; i < buffer.capacity(); i += 1) {
+            buffer.dequeue();
+        }
+        double[] bf = new double[buffer.capacity()];
+        int i = 0; int j;
+        while (i < buffer.capacity()) {
+            double r = Math.random() - 0.5;
+            for (j = 0; j < i; j += 1) {
+                if (bf[i] == bf[j]) {
+                    break;
+                }
+            }
+            if (j == i) {
+                bf[i] = r;
+                buffer.enqueue(r);
+                i += 1;
+            }
+        }
     }
 
     /* Advance the simulation one time step by performing one iteration of
@@ -37,11 +60,14 @@ public class GuitarString {
         // TODO: Dequeue the front sample and enqueue a new sample that is
         //       the average of the two multiplied by the DECAY factor.
         //       Do not call StdAudio.play().
+        double front = buffer.dequeue();
+        double toAdd = (front + buffer.peek()) * 0.5 * DECAY ;
+        buffer.enqueue(toAdd);
     }
 
     /* Return the double at the front of the buffer. */
     public double sample() {
         // TODO: Return the correct thing.
-        return 0;
+        return buffer.peek();
     }
 }

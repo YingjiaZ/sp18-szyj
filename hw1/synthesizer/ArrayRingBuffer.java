@@ -2,6 +2,8 @@
 // package <package name>;
 package synthesizer;
 
+import org.junit.validator.ValidateWith;
+
 import java.util.Iterator;
 
 //: Make sure to make this class and all of its methods public
@@ -44,6 +46,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * throw new RuntimeException("Ring buffer overflow"). Exceptions
      * covered Monday.
      */
+    @Override
     public void enqueue(T x) {
         // DONE: Enqueue the item. Don't forget to increase fillCount and update last.
         if (this.isFull()) {
@@ -59,6 +62,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * throw new RuntimeException("Ring buffer underflow"). Exceptions
      * covered Monday.
      */
+    @Override
     public T dequeue() {
         // DONE: Dequeue the first item. Don't forget to decrease fillCount and update
         if (this.isEmpty()) {
@@ -73,6 +77,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /**
      * Return oldest item, but don't remove it.
      */
+    @Override
     public T peek() {
         // : Return the first item. None of your instance variables should change.
         if (this.isEmpty()) {
@@ -82,6 +87,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     // : When you get to part 5, implement the needed code to support iteration.
+    @Override
     public Iterator<T> iterator() {
         return new BufferIterator();
     }
@@ -93,10 +99,12 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
             pointer = 0;
         }
 
+        @Override
         public boolean hasNext() {
             return pointer < fillCount;
         }
 
+        @Override
         public T next() {
             T returnItem = rb[pointer];
             pointer += 1;
